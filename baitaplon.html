@@ -14,6 +14,7 @@
     <div class="text-center mb-3">
         <button class="btn btn-primary" onclick="showPage('home')">Trang Chủ</button>
         <button class="btn btn-success" onclick="showPage('manage')">Quản Lý</button>
+        <button class="btn btn-danger" onclick="showPage('debug')">Debug</button>
     </div>
 
      <!-- TRANG CHỦ  -->
@@ -85,8 +86,44 @@
                 Đủ tải học tập
             </div>
         </div>
+    </div>
+
+        <!-- DEBUG -->
+    <div id="debug" style="display:none;">
+
+        <h4>Code lỗi</h4>
+        <pre class="bg-light p-3">
+function tinhTongTinChi(courses) {
+    let total = 0;
+    for (let i = 0; i <= courses.length; i++) {
+        total += courses[i].tinChi;
+    }
+    return total;
+}
+        </pre>
+
+        <h4>Code đã sửa</h4>
+        <pre class="bg-light p-3">
+function tinhTongTinChi(courses) {
+    let total = 0;
+    for (let i = 0; i < courses.length; i++) {
+        total += courses[i].tinChi;
+    }
+
+    return total;
+}
+        </pre>
+
+        <h4>Giải thích lỗi</h4>
+        <ul>
+            <li> Trong JavaScript mảng được đánh chỉ số (index) bắt đầu từ 0. Do đó, phần tử cuối cùng của mảng có chỉ số là length - 1.</li>
+            <li>Khi vòng lặp chạy đến i = courses.length, máy tính sẽ cố gắng truy cập vào courses[courses.length]. Phần tử này không tồn tại, trả về undefined. Khi thực hiện phép cộng total += undefined.tinChi, chương trình sẽ gây lỗi (Crash) vì không thể đọc thuộc tính của undefined.</li>
+            <li>Ví dụ: Đoạn mã của bạn giống như một người chủ đi kiểm tra từng phòng để thu tiền: Khi bạn viết i <= 3: Bạn nói người chủ kiểm tra đến tận phòng số 3. Người chủ kiểm tra phòng 0, 1, 2 đều ổn. Đến phòng số 3: Người chủ mở cửa ra nhưng không có phòng nào cả (vì khách sạn chỉ đánh số đến 2).</li>
+        </ul>
 
     </div>
+
+</div>
 
     <!-- JAVASCRIPT -->
 <script>
