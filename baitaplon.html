@@ -14,7 +14,6 @@
     <div class="text-center mb-3">
         <button class="btn btn-primary" onclick="showPage('home')">Trang Chủ</button>
         <button class="btn btn-success" onclick="showPage('manage')">Quản Lý</button>
-        <button class="btn btn-danger" onclick="showPage('debug')">Debug</button>
     </div>
 
      <!-- TRANG CHỦ  -->
@@ -38,3 +37,127 @@
         </div>
 
     </div>
+
+    <!-- QUẢN LÝ -->
+    <div id="manage" style="display:none;">
+
+        <h3 class="text-center">Quản Lý Môn Học</h3>
+
+        <!-- FORM -->
+        <div class="row mt-3">
+
+            <div class="col">
+                <input type="text" id="tenMon" class="form-control" placeholder="Tên môn">
+            </div>
+
+            <div class="col">
+                <input type="number" id="tinChi" class="form-control" placeholder="Số tín chỉ">
+            </div>
+
+            <div class="col">
+                <input type="number" id="diem" class="form-control" placeholder="Điểm dự kiến">
+            </div>
+
+            <div class="col">
+                <button class="btn btn-primary" onclick="themMon()">Thêm</button>
+            </div>
+
+        </div>
+
+        <table class="table table-bordered mt-4 text-center">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>Tên môn</th>
+                    <th>Tín chỉ</th>
+                    <th>Điểm</th>
+                </tr>
+            </thead>
+
+            <tbody id="table-body"></tbody>
+
+        </table>
+
+        <!-- TOAST -->
+        <div class="toast position-fixed bottom-0 end-0 m-3" id="toast">
+            <div class="toast-body bg-success text-white">
+                Đủ tải học tập
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+<script>
+
+function showPage(page) {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("manage").style.display = "none";
+
+    document.getElementById(page).style.display = "block";
+}
+
+let courses = [];
+
+function themMon() {
+
+    let ten = document.getElementById("tenMon").value;
+    let tinChi = parseInt(document.getElementById("tinChi").value);
+    let diem = parseFloat(document.getElementById("diem").value);
+
+    if (ten === "" || isNaN(tinChi) || isNaN(diem)) {
+        alert("Vui lòng nhập đầy đủ!");
+        return;
+    }
+
+    let mon = {
+        ten: ten,
+        tinChi: tinChi,
+        diem: diem
+    };
+
+    let mssv = "123456"; // MSSV
+
+    if (parseInt(mssv[mssv.length - 1]) % 2 === 0) {
+        courses.push(mon);
+    } else {
+        courses.unshift(mon);
+    }
+
+    renderTable();
+}
+
+function renderTable() {
+
+    let html = "";
+    let tongTinChi = 0;
+
+    for (let i = 0; i < courses.length; i++) {
+
+        tongTinChi += courses[i].tinChi;
+
+        html += "<tr>";
+        html += "<td>" + (i + 1) + "</td>";
+        html += "<td>" + courses[i].ten + "</td>";
+        html += "<td>" + courses[i].tinChi + "</td>";
+        html += "<td>" + courses[i].diem + "</td>";
+        html += "</tr>";
+    }
+
+    document.getElementById("table-body").innerHTML = html;
+
+    // Toast nếu > 15 tín chỉ
+    if (tongTinChi > 15) {
+        let toast = new bootstrap.Toast(document.getElementById("toast"));
+        toast.show();
+    }
+}
+
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
